@@ -38,6 +38,30 @@
 
     //Naked function reference for surrogate-prototype-swapping.
 
+    var Ctor = function(){};
+
+
+
+    //Create a safe reference to the Underscore object for use below.
+
+    var _ = function(obj) {
+        if (obj instanceof _) return obj;
+        if (!(this instanceof _)) return new _(obj);
+        this._wrapped = obj;
+    };
+
+
+    //Export the Underscore object for Node.js, with backwards-compatibility for the old require() API. If we’re in the browser, add _ as a global object.
+
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = _;
+        }
+        exports._ = _;
+    } else {
+        root._ = _;
+    }
+
 
 
 
